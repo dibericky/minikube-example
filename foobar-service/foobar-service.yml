@@ -1,0 +1,43 @@
+# APP DEPLOYMENT
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: foobar-service
+  name: foobar-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: foobar-service-exposed
+  template:
+    metadata:
+      labels:
+        run: foobar-service-exposed
+    spec:
+      containers:
+      - image: localhost:5000/foobar-service:0.1.0
+        name: foobar-service
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+
+---
+
+# APP SERVICE
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: foobar-service
+  name: foobar-service
+spec:
+  ports:
+  - port: 90
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    run: foobar-service-exposed
+  type: LoadBalancer

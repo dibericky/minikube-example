@@ -1,0 +1,43 @@
+# APP DEPLOYMENT
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: hello-server
+  name: hello-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: hello-server-exposed
+  template:
+    metadata:
+      labels:
+        run: hello-server-exposed
+    spec:
+      containers:
+      - image: localhost:5000/my-hello-server:1.1.2
+        name: hello-server
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+
+---
+
+# APP SERVICE
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: hello-server
+  name: hello-server
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: hello-server-exposed
+  type: LoadBalancer
