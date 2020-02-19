@@ -1,0 +1,14 @@
+*.DS_Store
+.git
+.idea
+.vscode
+.dockerignore
+*.env
+*.log*
+.gitignore
+.nvmrc
+.yarn-integrity
+Dockerfile
+package.json
+package-lock.json
+README.md
